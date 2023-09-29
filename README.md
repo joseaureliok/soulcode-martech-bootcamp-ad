@@ -1,5 +1,14 @@
-# **Projeto Final**
+# **BOOTCAMP MARTECH ACADEMY PARA ANÁLISE DE DADOS**
+Programa de formação de Analista de Dados, fornecido pela SoulCode Academy e parceiros. 
 
-## Tema: **Energia**
+### **Resumo das Aulas**
+[Folder](https://github.com/joseaureliok/soulcode-martech-bootcamp-ad/tree/notebooks_aulas/aulas-resumos)
 
-[Documentação - Link](https://docs.google.com/document/d/16-m6mtdJQk8bVmq5uDekGb9AyEpeURVB_9coqag6zPI/edit?usp=sharing)
+### **Atividades em projetos**
+[Folder](https://github.com/joseaureliok/soulcode-martech-bootcamp-ad/tree/notebooks_aulas/atividades-projetos)
+
+### **Dashboards**
+[Folder](https://github.com/joseaureliok/soulcode-martech-bootcamp-ad/tree/notebooks_aulas/dashboards)
+
+### **Projeto final** ##
+[Repository](https://github.com/squadOito/soulcodead2)
