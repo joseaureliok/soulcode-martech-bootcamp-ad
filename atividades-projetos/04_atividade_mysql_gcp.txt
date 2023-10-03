@@ -1,3 +1,12 @@
+Bootcamp Martech em Análise de Dados - AD2
+SoulCode Academy
+Professores:
+            Franciane Rodrigues
+            Douglas Ribeiro
+            Jonatas Carneiro
+Acadêmico:
+            José Aurelio Kovalczuk de Oliveira
+
 https://dev.mysql.com/doc/refman/8.0/en/string-functions.html 
 
 Welcome to Cloud Shell! Type "help" to get started.
