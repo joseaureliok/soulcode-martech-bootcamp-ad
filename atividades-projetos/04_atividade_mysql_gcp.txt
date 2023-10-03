@@ -1,0 +1,929 @@
+https://dev.mysql.com/doc/refman/8.0/en/string-functions.html 
+
+Welcome to Cloud Shell! Type "help" to get started.
+Your Cloud Platform project in this session is set to poised-standard-389812.
+Use “gcloud config set project [PROJECT_ID]” to change to a different project.
+joseaureliok86@cloudshell:~ (poised-standard-389812)$ gcloud sql connect soulcode-ad2-n --user=root                                                                                                      
+Allowlisting your IP for incoming connection for 5 minutes...done.                                                                                                                                       
+Connecting to database with SQL user [root].Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 32
+Server version: 8.0.31-google (Google)
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| loja               |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.03 sec)
+
+mysql> USE loja;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> SELECT endereco, count(*)
+    -> FROM Cliente
+    -> GROUP BY endereco;
++----------+----------+
+| endereco | count(*) |
++----------+----------+
+| SP       |        5 |
+| MG       |        1 |
+| BA       |        3 |
+| PE       |        1 |
+| CE       |        1 |
+| GO       |        1 |
+| AC       |        1 |
+| MA       |        1 |
+| PI       |        1 |
+| PB       |        1 |
+| RS       |        1 |
+| TO       |        1 |
+| DF       |        1 |
+| PA       |        1 |
++----------+----------+
+14 rows in set (0.04 sec)
+
+mysql> SELECT endereco, count(*) AS frequencia FROM Cliente GROUP BY endereco;
++----------+------------+
+| endereco | frequencia |
++----------+------------+
+| SP       |          5 |
+| MG       |          1 |
+| BA       |          3 |
+| PE       |          1 |
+| CE       |          1 |
+| GO       |          1 |
+| AC       |          1 |
+| MA       |          1 |
+| PI       |          1 |
+| PB       |          1 |
+| RS       |          1 |
+| TO       |          1 |
+| DF       |          1 |
+| PA       |          1 |
++----------+------------+
+14 rows in set (0.03 sec)
+
+mysql> SELECT endereco, count(*) AS frequencia FROM Cliente GROUP BY endereco ORDER BY endereco;
++----------+------------+
+| endereco | frequencia |
++----------+------------+
+| AC       |          1 |
+| BA       |          3 |
+| CE       |          1 |
+| DF       |          1 |
+| GO       |          1 |
+| MA       |          1 |
+| MG       |          1 |
+| PA       |          1 |
+| PB       |          1 |
+| PE       |          1 |
+| PI       |          1 |
+| RS       |          1 |
+| SP       |          5 |
+| TO       |          1 |
++----------+------------+
+14 rows in set (0.03 sec)
+
+mysql> SELECT endereco, count(*) AS frequencia FROM Cliente GROUP BY endereco ORDER BY endereco DESC;
++----------+------------+
+| endereco | frequencia |
++----------+------------+
+| TO       |          1 |
+| SP       |          5 |
+| RS       |          1 |
+| PI       |          1 |
+| PE       |          1 |
+| PB       |          1 |
+| PA       |          1 |
+| MG       |          1 |
+| MA       |          1 |
+| GO       |          1 |
+| DF       |          1 |
+| CE       |          1 |
+| BA       |          3 |
+| AC       |          1 |
++----------+------------+
+14 rows in set (0.03 sec)
+
+mysql> SELECT endereco, count(*) frequencia FROM Cliente GROUP BY endereco ORDER BY frequencia;
++----------+------------+
+| endereco | frequencia |
++----------+------------+
+| MG       |          1 |
+| PE       |          1 |
+| CE       |          1 |
+| GO       |          1 |
+| AC       |          1 |
+| MA       |          1 |
+| PI       |          1 |
+| PB       |          1 |
+| RS       |          1 |
+| TO       |          1 |
+| DF       |          1 |
+| PA       |          1 |
+| BA       |          3 |
+| SP       |          5 |
++----------+------------+
+14 rows in set (0.04 sec)
+
+mysql> SELECT endereco, count(*) frequencia FROM Cliente GROUP BY endereco ORDER BY frequencia DESC;
++----------+------------+
+| endereco | frequencia |
++----------+------------+
+| SP       |          5 |
+| BA       |          3 |
+| MG       |          1 |
+| PE       |          1 |
+| CE       |          1 |
+| GO       |          1 |
+| AC       |          1 |
+| MA       |          1 |
+| PI       |          1 |
+| PB       |          1 |
+| RS       |          1 |
+| TO       |          1 |
+| DF       |          1 |
+| PA       |          1 |
++----------+------------+
+14 rows in set (0.03 sec)
+
+mysql> SELECT endereco, count(*) frequencia FROM Cliente GROUP BY endereco HAVING frequencia > 1;
++----------+------------+
+| endereco | frequencia |
++----------+------------+
+| SP       |          5 |
+| BA       |          3 |
++----------+------------+
+2 rows in set (0.04 sec)
+
+mysql> SHOW TABLES;
++------------------+
+| Tables_in_loja   |
++------------------+
+| Categoria        |
+| Cliente          |
+| ItemPedido       |
+| Pedido           |
+| Produto          |
+| ProdutoCategoria |
++------------------+
+6 rows in set (0.03 sec)
+
+mysql> SELECT * FROM Produto;
++------------+--------+-------+
+| id_produto | nome   | preco |
++------------+--------+-------+
+|          1 | Caneca | 15.99 |
+|          2 | Garfo  |  5.99 |
+|          3 | Faca   |  7.99 |
+|          4 | Colher |  3.99 |
+|          5 | Copo   | 10.99 |
++------------+--------+-------+
+5 rows in set (0.03 sec)
+
+mysql> SELECT * FROM ItemPedido;
++---------+-----------+------------+------------+
+| id_item | id_pedido | id_produto | quantidade |
++---------+-----------+------------+------------+
+|       1 |         1 |          1 |          2 |
+|       2 |         2 |          2 |          5 |
+|       3 |         3 |          3 |          7 |
+|       4 |         4 |          5 |         10 |
+|       5 |         5 |          5 |         11 |
+|       6 |         6 |          4 |         30 |
+|       7 |         7 |          4 |         32 |
+|       8 |         8 |          4 |         44 |
+|       9 |         9 |          5 |         13 |
+|      10 |        10 |          4 |         33 |
+|      11 |        11 |          5 |         34 |
+|      12 |        12 |          4 |         32 |
+|      13 |        13 |          2 |         33 |
+|      14 |        14 |          2 |         34 |
+|      15 |        15 |          4 |         27 |
+|      16 |        16 |          2 |         18 |
+|      17 |        17 |          5 |         17 |
+|      18 |        18 |          2 |         33 |
+|      19 |        19 |          1 |         50 |
+|      20 |        20 |          1 |         47 |
++---------+-----------+------------+------------+
+20 rows in set (0.03 sec)
+
+mysql> SELECT id_produto, sum(quantidade) quantidade FROM ItemPedido GROUP BY id_produto;
++------------+------------+
+| id_produto | quantidade |
++------------+------------+
+|          1 |         99 |
+|          2 |        123 |
+|          3 |          7 |
+|          4 |        198 |
+|          5 |         85 |
++------------+------------+
+5 rows in set (0.03 sec)
+
+mysql> SELECT id_produto, sum(quantidade) qtde_total FROM ItemPedido GROUP BY id_produto;
++------------+------------+
+| id_produto | qtde_total |
++------------+------------+
+|          1 |         99 |
+|          2 |        123 |
+|          3 |          7 |
+|          4 |        198 |
+|          5 |         85 |
++------------+------------+
+5 rows in set (0.03 sec)
+
+mysql> SELECT id_produto, sum(quantidade) qtde_total FROM ItemPedido GROUP BY id_produto HAVING 50 < qtde_total < 100;
++------------+------------+
+| id_produto | qtde_total |
++------------+------------+
+|          1 |         99 |
+|          2 |        123 |
+|          3 |          7 |
+|          4 |        198 |
+|          5 |         85 |
++------------+------------+
+5 rows in set (0.03 sec)
+
+mysql> SELECT id_produto, sum(quantidade) qtde_total FROM ItemPedido GROUP BY id_produto HAVING qtde_total<100;
++------------+------------+
+| id_produto | qtde_total |
++------------+------------+
+|          1 |         99 |
+|          3 |          7 |
+|          5 |         85 |
++------------+------------+
+3 rows in set (0.03 sec)
+
+mysql> SELECT id_produto, sum(quantidade) qtde_total FROM ItemPedido GROUP BY id_produto HAVING qtde_total<100 AND qtde_total>50;
++------------+------------+
+| id_produto | qtde_total |
++------------+------------+
+|          1 |         99 |
+|          5 |         85 |
++------------+------------+
+2 rows in set (0.04 sec)
+
+mysql> SELECT id_pedido, id_produto
+    ->   FROM ItemPedido
+    -> WHERE id_produto = 1
+    -> UNION
+    -> SELECT id_pedido, id_produto
+    ->   FROM ItemPedido
+    -> WHERE id_produto = 4;
++-----------+------------+
+| id_pedido | id_produto |
++-----------+------------+
+|         1 |          1 |
+|        19 |          1 |
+|        20 |          1 |
+|         6 |          4 |
+|         7 |          4 |
+|         8 |          4 |
+|        10 |          4 |
+|        12 |          4 |
+|   
+
+mysql> SELECT
+    ->   id_pedido,
+    ->   id_produto
+    -> FROM ItemPedido
+    -> WHERE id_produto = 1 OR id_produto = 2;
++-----------+------------+
+| id_pedido | id_produto |
++-----------+------------+
+|         1 |          1 |
+|        19 |          1 |
+|        20 |          1 |
+|         2 |          2 |
+|        13 |          2 |
+|        14 |          2 |
+|        16 |          2 |
+|        18 |          2 |
++-----------+------------+
+8 rows in set (0.03 sec)
+
+mysql> SELECT
+    ->   id_pedido,
+    ->   id_produto
+    -> FROM ItemPedido
+    -> WHERE id_produto IN (1,2);
++-----------+------------+
+| id_pedido | id_produto |
++-----------+------------+
+|         1 |          1 |
+|        19 |          1 |
+|        20 |          1 |
+|         2 |          2 |
+|        13 |          2 |
+|        14 |          2 |
+|        16 |          2 |
+|        18 |          2 |
++-----------+------------+
+8 rows in set (0.03 sec)     15 |          4 |
++-----------+------------+
+9 rows in set (0.03 sec)
+
+mysql> SELECT id_pedido, id_produto FROM ItemPedido WHERE id_pedido = 1 UNION SELECT id_pedido, id_produto FROM ItemPedido WHERE id_produto = 4;
++-----------+------------+
+| id_pedido | id_produto |
++-----------+------------+
+|         1 |          1 |
+|         6 |          4 |
+|         7 |          4 |
+|         8 |          4 |
+|        10 |          4 |
+|        12 |          4 |
+|        15 |          4 |
++-----------+------------+
+7 rows in set (0.03 sec)
+
+mysql> SELECT id_pedido, id_produto FROM ItemPedido WHERE id_pedido = 1 UNION SELECT id_pedido, id_produto FROM ItemPedido WHERE id_produto = 1;
++-----------+------------+
+| id_pedido | id_produto |
++-----------+------------+
+|         1 |          1 |
+|        19 |          1 |
+|        20 |          1 |
++-----------+------------+
+3 rows in set (0.03 sec)
+
+mysql> SELECT
+    ->   id_pedido,
+    ->   id_produto
+    -> FROM ItemPedido
+    -> WHERE id_produto = 1 OR id_produto = 2;
++-----------+------------+
+| id_pedido | id_produto |
++-----------+------------+
+|         1 |          1 |
+|        19 |          1 |
+|        20 |          1 |
+|         2 |          2 |
+|        13 |          2 |
+|        14 |          2 |
+|        16 |          2 |
+|        18 |          2 |
++-----------+------------+
+8 rows in set (0.03 sec)
+
+mysql> SELECT
+    ->   id_pedido,
+    ->   id_produto
+    -> FROM ItemPedido
+    -> WHERE id_produto IN (1,2);
++-----------+------------+
+| id_pedido | id_produto |
++-----------+------------+
+|         1 |          1 |
+|        19 |          1 |
+|        20 |          1 |
+|         2 |          2 |
+|        13 |          2 |
+|        14 |          2 |
+|        16 |          2 |
+|        18 |          2 |
++-----------+------------+
+8 rows in set (0.03 sec)
+
+mysql> SELECT
+    ->   id_pedido,
+    ->   id_produto
+    -> FROM ItemPedido
+    -> WHERE id_produto IN (1,2) AND
+    ->   id_pedido BETWEEN 1 AND 9;
++-----------+------------+
+| id_pedido | id_produto |
++-----------+------------+
+|         1 |          1 |
+|         2 |          2 |
++-----------+------------+
+2 rows in set (0.04 sec)
+
+mysql> SELECT nome, endereco FROM Cliente WHERE nome LIKE 'D%';
++---------+----------+
+| nome    | endereco |
++---------+----------+
+| Douglas | SP       |
+| Daniela | SP       |
+| Douglas | PE       |
+| Douglas | MA       |
+| Daniela | PI       |
++---------+----------+
+5 rows in set (0.04 sec)
+
+mysql> SELECT nome, endereco FROM Cliente WHERE nome LIKE '%o';
++----------+----------+
+| nome     | endereco |
++----------+----------+
+| Raimundo | CE       |
+| Pedro    | PB       |
+| Julio    | TO       |
+| Celso    | SP       |
+| Pedro    | SP       |
++----------+----------+
+5 rows in set (0.03 sec)
+
+mysql> SELECT nome, endereco FROM Cliente WHERE nome IS NOT NULL;
++-------------+----------+
+| nome        | endereco |
++-------------+----------+
+| Douglas     | SP       |
+| Daniela     | SP       |
+| Ester       | MG       |
+| Maria       | BA       |
+| Douglas     | PE       |
+| Raimundo    | CE       |
+| Jucimara    | GO       |
+| Marlene     | AC       |
+| Douglas     | MA       |
+| Daniela     | PI       |
+| Pedro       | PB       |
+| Joaquim     | RS       |
+| Julio       | TO       |
+| Carla       | DF       |
+| Bianca      | PA       |
+| Sandra      | SP       |
+| Celso       | SP       |
+| Silvana     | BA       |
+| Prof Raquel | BA       |
+| Pedro       | SP       |
++-------------+----------+
+20 rows in set (0.03 sec)
+
+mysql> SELECT nome, endereco FROM Cliente WHERE nome IS NULL;
+Empty set (0.03 sec)
+
+mysql> SELECT nome, endereco FROM Cliente ORDER BY nome ASC;
++-------------+----------+
+| nome        | endereco |
++-------------+----------+
+| Bianca      | PA       |
+| Carla       | DF       |
+| Celso       | SP       |
+| Daniela     | SP       |
+| Daniela     | PI       |
+| Douglas     | SP       |
+| Douglas     | PE       |
+| Douglas     | MA       |
+| Ester       | MG       |
+| Joaquim     | RS       |
+| Jucimara    | GO       |
+| Julio       | TO       |
+| Maria       | BA       |
+| Marlene     | AC       |
+| Pedro       | PB       |
+| Pedro       | SP       |
+| Prof Raquel | BA       |
+| Raimundo    | CE       |
+| Sandra      | SP       |
+| Silvana     | BA       |
++-------------+----------+
+20 rows in set (0.03 sec)
+
+mysql> SELECT nome, endereco FROM Cliente ORDER BY nome DESC;
++-------------+----------+
+| nome        | endereco |
++-------------+----------+
+| Silvana     | BA       |
+| Sandra      | SP       |
+| Raimundo    | CE       |
+| Prof Raquel | BA       |
+| Pedro       | PB       |
+| Pedro       | SP       |
+| Marlene     | AC       |
+| Maria       | BA       |
+| Julio       | TO       |
+| Jucimara    | GO       |
+| Joaquim     | RS       |
+| Ester       | MG       |
+| Douglas     | SP       |
+| Douglas     | PE       |
+| Douglas     | MA       |
+| Daniela     | SP       |
+| Daniela     | PI       |
+| Celso       | SP       |
+| Carla       | DF       |
+| Bianca      | PA       |
++-------------+----------+
+20 rows in set (0.03 sec)
+
+mysql> SELECT nome, TRIM(TRAILING '.99' FROM preco) AS ptrim FROM Produto;
++--------+-------+
+| nome   | ptrim |
++--------+-------+
+| Caneca | 15    |
+| Garfo  | 5     |
+| Faca   | 7     |
+| Colher | 3     |
+| Copo   | 10    |
++--------+-------+
+5 rows in set (0.03 sec)
+
+mysql> SELECT id_pedido,
+    ->   LPAD(id_pedido, 5, "0")
+    -> FROM ItemPedido;
++-----------+-------------------------+
+| id_pedido | LPAD(id_pedido, 5, "0") |
++-----------+-------------------------+
+|         1 | 00001                   |
+|         2 | 00002                   |
+|         3 | 00003                   |
+|         4 | 00004                   |
+|         5 | 00005                   |
+|         6 | 00006                   |
+|         7 | 00007                   |
+|         8 | 00008                   |
+|         9 | 00009                   |
+|        10 | 00010                   |
+|        11 | 00011                   |
+|        12 | 00012                   |
+|        13 | 00013                   |
+|        14 | 00014                   |
+|        15 | 00015                   |
+|        16 | 00016                   |
+|        17 | 00017                   |
+|        18 | 00018                   |
+|        19 | 00019                   |
+|        20 | 00020                   |
++-----------+-------------------------+
+20 rows in set (0.04 sec)
+
+mysql> SELECT nome,
+    ->   SUBSTRING(nome, 1, 2) AS subs
+    -> FROM Produto;
++--------+------+
+| nome   | subs |
++--------+------+
+| Caneca | Ca   |
+| Garfo  | Ga   |
+| Faca   | Fa   |
+| Colher | Co   |
+| Copo   | Co   |
++--------+------+
+5 rows in set (0.04 sec)
+
+mysql> SELECT nome, SUBSTRING(preco, 1, 2) AS subst FROM Produto;
++--------+-------+
+| nome   | subst |
++--------+-------+
+| Caneca | 15    |
+| Garfo  | 5.    |
+| Faca   | 7.    |
+| Colher | 3.    |
+| Copo   | 10    |
++--------+-------+
+5 rows in set (0.03 sec)
+
+mysql> SELECT nome, LOWER(nome), UPPER(nome) FROM Cliente;
++-------------+-------------+-------------+
+| nome        | LOWER(nome) | UPPER(nome) |
++-------------+-------------+-------------+
+| Douglas     | douglas     | DOUGLAS     |
+| Daniela     | daniela     | DANIELA     |
+| Ester       | ester       | ESTER       |
+| Maria       | maria       | MARIA       |
+| Douglas     | douglas     | DOUGLAS     |
+| Raimundo    | raimundo    | RAIMUNDO    |
+| Jucimara    | jucimara    | JUCIMARA    |
+| Marlene     | marlene     | MARLENE     |
+| Douglas     | douglas     | DOUGLAS     |
+| Daniela     | daniela     | DANIELA     |
+| Pedro       | pedro       | PEDRO       |
+| Joaquim     | joaquim     | JOAQUIM     |
+| Julio       | julio       | JULIO       |
+| Carla       | carla       | CARLA       |
+| Bianca      | bianca      | BIANCA      |
+| Sandra      | sandra      | SANDRA      |
+| Celso       | celso       | CELSO       |
+| Silvana     | silvana     | SILVANA     |
+| Prof Raquel | prof raquel | PROF RAQUEL |
+| Pedro       | pedro       | PEDRO       |
++-------------+-------------+-------------+
+20 rows in set (0.03 sec)
+
+mysql> SELECT nome, LENGTH(nome) FROM Cliente;
++-------------+--------------+
+| nome        | LENGTH(nome) |
++-------------+--------------+
+| Douglas     |            7 |
+| Daniela     |            7 |
+| Ester       |            5 |
+| Maria       |            5 |
+| Douglas     |            7 |
+| Raimundo    |            8 |
+| Jucimara    |            8 |
+| Marlene     |            7 |
+| Douglas     |            7 |
+| Daniela     |            7 |
+| Pedro       |            5 |
+| Joaquim     |            7 |
+| Julio       |            5 |
+| Carla       |            5 |
+| Bianca      |            6 |
+| Sandra      |            6 |
+| Celso       |            5 |
+| Silvana     |            7 |
+| Prof Raquel |           11 |
+| Pedro       |            5 |
++-------------+--------------+
+20 rows in set (0.04 sec)
+
+mysql> SELECT id_cliente,
+    -> concat('Cliente - ', CAST(id_cliente AS CHAR)) AS id_cliente_texto
+    -> FROM Cliente;
++------------+------------------+
+| id_cliente | id_cliente_texto |
++------------+------------------+
+|          1 | Cliente - 1      |
+|          2 | Cliente - 2      |
+|          3 | Cliente - 3      |
+|          4 | Cliente - 4      |
+|          5 | Cliente - 5      |
+|          6 | Cliente - 6      |
+|          7 | Cliente - 7      |
+|          8 | Cliente - 8      |
+|          9 | Cliente - 9      |
+|         10 | Cliente - 10     |
+|         11 | Cliente - 11     |
+|         12 | Cliente - 12     |
+|         13 | Cliente - 13     |
+|         14 | Cliente - 14     |
+|         15 | Cliente - 15     |
+|         16 | Cliente - 16     |
+|         17 | Cliente - 17     |
+|         18 | Cliente - 18     |
+|         19 | Cliente - 19     |
+|         20 | Cliente - 20     |
++------------+------------------+
+20 rows in set (0.04 sec)
+
+mysql> SELECT id_pedido, quantidade,
+    -> CASE WHEN quantidade > 30 THEN 'Atacado'
+    ->     ELSE 'Varejo' END
+    -> FROM ItemPedido;
++-----------+------------+----------------------------------------------------------------+
+| id_pedido | quantidade | CASE WHEN quantidade > 30 THEN 'Atacado'
+    ELSE 'Varejo' END |
++-----------+------------+----------------------------------------------------------------+
+|         1 |          2 | Varejo                                                         |
+|         2 |          5 | Varejo                                                         |
+|         3 |          7 | Varejo                                                         |
+|         4 |         10 | Varejo                                                         |
+|         5 |         11 | Varejo                                                         |
+|         6 |         30 | Varejo                                                         |
+|         7 |         32 | Atacado                                                        |
+|         8 |         44 | Atacado                                                        |
+|         9 |         13 | Varejo                                                         |
+|        10 |         33 | Atacado                                                        |
+|        11 |         34 | Atacado                                                        |
+|        12 |         32 | Atacado                                                        |
+|        13 |         33 | Atacado                                                        |
+|        14 |         34 | Atacado                                                        |
+|        15 |         27 | Varejo                                                         |
+|        16 |         18 | Varejo                                                         |
+|        17 |         17 | Varejo                                                         |
+|        18 |         33 | Atacado                                                        |
+|        19 |         50 | Atacado                                                        |
+|        20 |         47 | Atacado                                                        |
++-----------+------------+----------------------------------------------------------------+
+20 rows in set (0.04 sec)
+
+mysql> CREATE OR REPLACE VIEW query AS SELECT id_pedido, quantidade, CASE WHEN quantidade > 30 THEN 'Atacado' ELSE 'Varejo' END FROM ItemPedido;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> SELECT * FROM query;
++-----------+------------+------------------------------------------------------------+
+| id_pedido | quantidade | CASE WHEN quantidade > 30 THEN 'Atacado' ELSE 'Varejo' END |
++-----------+------------+------------------------------------------------------------+
+|         1 |          2 | Varejo                                                     |
+|         2 |          5 | Varejo                                                     |
+|         3 |          7 | Varejo                                                     |
+|         4 |         10 | Varejo                                                     |
+|         5 |         11 | Varejo                                                     |
+|         6 |         30 | Varejo                                                     |
+|         7 |         32 | Atacado                                                    |
+|         8 |         44 | Atacado                                                    |
+|         9 |         13 | Varejo                                                     |
+|        10 |         33 | Atacado                                                    |
+|        11 |         34 | Atacado                                                    |
+|        12 |         32 | Atacado                                                    |
+|        13 |         33 | Atacado                                                    |
+|        14 |         34 | Atacado                                                    |
+|        15 |         27 | Varejo                                                     |
+|        16 |         18 | Varejo                                                     |
+|        17 |         17 | Varejo                                                     |
+|        18 |         33 | Atacado                                                    |
+|        19 |         50 | Atacado                                                    |
+|        20 |         47 | Atacado                                                    |
++-----------+------------+------------------------------------------------------------+
+20 rows in set (0.04 sec)
+
+mysql> DESC query;
++------------------------------------------------------------+------------+------+-----+---------+-------+
+| Field                                                      | Type       | Null | Key | Default | Extra |
++------------------------------------------------------------+------------+------+-----+---------+-------+
+| id_pedido                                                  | int        | YES  |     | NULL    |       |
+| quantidade                                                 | int        | YES  |     | NULL    |       |
+| CASE WHEN quantidade > 30 THEN 'Atacado' ELSE 'Varejo' END | varchar(7) | NO   |     |         |       |
++------------------------------------------------------------+------------+------+-----+---------+-------+
+3 rows in set (0.03 sec)
+
+mysql> DESC ItemPedido
+    -> ;
++------------+------+------+-----+---------+-------+
+| Field      | Type | Null | Key | Default | Extra |
++------------+------+------+-----+---------+-------+
+| id_item    | int  | NO   | PRI | NULL    |       |
+| id_pedido  | int  | YES  | MUL | NULL    |       |
+| id_produto | int  | YES  | MUL | NULL    |       |
+| quantidade | int  | YES  |     | NULL    |       |
++------------+------+------+-----+---------+-------+
+4 rows in set (0.04 sec)
+
+mysql> SELECT nome, descricao FROM Cliente A INNER JOIN Pedido B ON B.id_cliente = A.id_cliente ORDER BY nome;
++-------------+-----------+
+| nome        | descricao |
++-------------+-----------+
+| Bianca      | Colher    |
+| Carla       | Caneca    |
+| Celso       | Garfo     |
+| Daniela     | Faca      |
+| Daniela     | Copo      |
+| Daniela     | Garfo     |
+| Daniela     | Copo      |
+| Douglas     | Caneca    |
+| Douglas     | Garfo     |
+| Douglas     | Copo      |
+| Ester       | Colher    |
+| Ester       | Garfo     |
+| Julio       | Caneca    |
+| Maria       | Garfo     |
+| Marlene     | Colher    |
+| Pedro       | Colher    |
+| Prof Raquel | Copo      |
+| Prof Raquel | Colher    |
+| Prof Raquel | Colher    |
+| Raimundo    | Copo      |
++-------------+-----------+
+20 rows in set (0.03 sec)
+
+mysql> SELECT *
+    ->   FROM Cliente c
+    ->   LEFT JOIN Pedido p
+    ->   ON p.id_cliente = c.id_cliente;
++------------+-------------+----------+-----------+------------+-----------+
+| id_cliente | nome        | endereco | id_pedido | id_cliente | descricao |
++------------+-------------+----------+-----------+------------+-----------+
+|          1 | Douglas     | SP       |         1 |          1 | Caneca    |
+|          1 | Douglas     | SP       |         2 |          1 | Garfo     |
+|          2 | Daniela     | SP       |         3 |          2 | Faca      |
+|          2 | Daniela     | SP       |         9 |          2 | Copo      |
+|          2 | Daniela     | SP       |        17 |          2 | Copo      |
+|          3 | Ester       | MG       |        15 |          3 | Colher    |
+|          3 | Ester       | MG       |        16 |          3 | Garfo     |
+|          4 | Maria       | BA       |        14 |          4 | Garfo     |
+|          5 | Douglas     | PE       |         4 |          5 | Copo      |
+|          6 | Raimundo    | CE       |        11 |          6 | Copo      |
+|          7 | Jucimara    | GO       |      NULL |       NULL | NULL      |
+|          8 | Marlene     | AC       |         8 |          8 | Colher    |
+|          9 | Douglas     | MA       |      NULL |       NULL | NULL      |
+|         10 | Daniela     | PI       |        13 |         10 | Garfo     |
+|         11 | Pedro       | PB       |        12 |         11 | Colher    |
+|         12 | Joaquim     | RS       |      NULL |       NULL | NULL      |
+|         13 | Julio       | TO       |        20 |         13 | Caneca    |
+|         14 | Carla       | DF       |        19 |         14 | Caneca    |
+|         15 | Bianca      | PA       |         7 |         15 | Colher    |
+|         16 | Sandra      | SP       |      NULL |       NULL | NULL      |
+|         17 | Celso       | SP       |        18 |         17 | Garfo     |
+|         18 | Silvana     | BA       |      NULL |       NULL | NULL      |
+|         19 | Prof Raquel | BA       |         5 |         19 | Copo      |
+|         19 | Prof Raquel | BA       |         6 |         19 | Colher    |
+|         19 | Prof Raquel | BA       |        10 |         19 | Colher    |
+|         20 | Pedro       | SP       |      NULL |       NULL | NULL      |
+|         21 | Erick       | BA       |      NULL |       NULL | NULL      |
+|         22 | Denise      | DF       |      NULL |       NULL | NULL      |
+|         23 | Diana       | SP       |      NULL |       NULL | NULL      |
+|         24 | Dagmar      | DF       |      NULL |       NULL | NULL      |
+|         25 | Deiverson   | SP       |      NULL |       NULL | NULL      |
++------------+-------------+----------+-----------+------------+-----------+
+31 rows in set (0.03 sec)
+
+mysql> SELECT *   FROM Cliente c   LEFT JOIN Pedido p   ON c.id_cliente = p.id_cliente;
+=> correspondente ao RIGHT JOIN
++------------+-------------+----------+-----------+------------+-----------+
+| id_cliente | nome        | endereco | id_pedido | id_cliente | descricao |
++------------+-------------+----------+-----------+------------+-----------+
+|          1 | Douglas     | SP       |         1 |          1 | Caneca    |
+|          1 | Douglas     | SP       |         2 |          1 | Garfo     |
+|          2 | Daniela     | SP       |         3 |          2 | Faca      |
+|          2 | Daniela     | SP       |         9 |          2 | Copo      |
+|          2 | Daniela     | SP       |        17 |          2 | Copo      |
+|          3 | Ester       | MG       |        15 |          3 | Colher    |
+|          3 | Ester       | MG       |        16 |          3 | Garfo     |
+|          4 | Maria       | BA       |        14 |          4 | Garfo     |
+|          5 | Douglas     | PE       |         4 |          5 | Copo      |
+|          6 | Raimundo    | CE       |        11 |          6 | Copo      |
+|          7 | Jucimara    | GO       |      NULL |       NULL | NULL      |
+|          8 | Marlene     | AC       |         8 |          8 | Colher    |
+|          9 | Douglas     | MA       |      NULL |       NULL | NULL      |
+|         10 | Daniela     | PI       |        13 |         10 | Garfo     |
+|         11 | Pedro       | PB       |        12 |         11 | Colher    |
+|         12 | Joaquim     | RS       |      NULL |       NULL | NULL      |
+|         13 | Julio       | TO       |        20 |         13 | Caneca    |
+|         14 | Carla       | DF       |        19 |         14 | Caneca    |
+|         15 | Bianca      | PA       |         7 |         15 | Colher    |
+|         16 | Sandra      | SP       |      NULL |       NULL | NULL      |
+|         17 | Celso       | SP       |        18 |         17 | Garfo     |
+|         18 | Silvana     | BA       |      NULL |       NULL | NULL      |
+|         19 | Prof Raquel | BA       |         5 |         19 | Copo      |
+|         19 | Prof Raquel | BA       |         6 |         19 | Colher    |
+|         19 | Prof Raquel | BA       |        10 |         19 | Colher    |
+|         20 | Pedro       | SP       |      NULL |       NULL | NULL      |
+|         21 | Erick       | BA       |      NULL |       NULL | NULL      |
+|         22 | Denise      | DF       |      NULL |       NULL | NULL      |
+|         23 | Diana       | SP       |      NULL |       NULL | NULL      |
+|         24 | Dagmar      | DF       |      NULL |       NULL | NULL      |
+|         25 | Deiverson   | SP       |      NULL |       NULL | NULL      |
++------------+-------------+----------+-----------+------------+-----------+
+31 rows in set (0.03 sec)
+
+mysql> SELECT *
+    ->   FROM      Cliente c
+    ->   LEFT JOIN Pedido p ON p.id_cliente = c.id_cliente
+    -> UNION
+    -> SELECT *
+    ->   FROM      Pedido p
+    ->   LEFT JOIN Cliente c ON p.id_cliente = c.id_cliente;
+=> correspondente ao FULL OUTER JOIN
++------------+-------------+----------+-----------+-------------+-----------+
+| id_cliente | nome        | endereco | id_pedido | id_cliente  | descricao |
++------------+-------------+----------+-----------+-------------+-----------+
+|          1 | Douglas     | SP       |         1 | 1           | Caneca    |
+|          1 | Douglas     | SP       |         2 | 1           | Garfo     |
+|          2 | Daniela     | SP       |         3 | 2           | Faca      |
+|          2 | Daniela     | SP       |         9 | 2           | Copo      |
+|          2 | Daniela     | SP       |        17 | 2           | Copo      |
+|          3 | Ester       | MG       |        15 | 3           | Colher    |
+|          3 | Ester       | MG       |        16 | 3           | Garfo     |
+|          4 | Maria       | BA       |        14 | 4           | Garfo     |
+|          5 | Douglas     | PE       |         4 | 5           | Copo      |
+|          6 | Raimundo    | CE       |        11 | 6           | Copo      |
+|          7 | Jucimara    | GO       |      NULL | NULL        | NULL      |
+|          8 | Marlene     | AC       |         8 | 8           | Colher    |
+|          9 | Douglas     | MA       |      NULL | NULL        | NULL      |
+|         10 | Daniela     | PI       |        13 | 10          | Garfo     |
+|         11 | Pedro       | PB       |        12 | 11          | Colher    |
+|         12 | Joaquim     | RS       |      NULL | NULL        | NULL      |
+|         13 | Julio       | TO       |        20 | 13          | Caneca    |
+|         14 | Carla       | DF       |        19 | 14          | Caneca    |
+|         15 | Bianca      | PA       |         7 | 15          | Colher    |
+|         16 | Sandra      | SP       |      NULL | NULL        | NULL      |
+|         17 | Celso       | SP       |        18 | 17          | Garfo     |
+|         18 | Silvana     | BA       |      NULL | NULL        | NULL      |
+|         19 | Prof Raquel | BA       |         5 | 19          | Copo      |
+|         19 | Prof Raquel | BA       |         6 | 19          | Colher    |
+|         19 | Prof Raquel | BA       |        10 | 19          | Colher    |
+|         20 | Pedro       | SP       |      NULL | NULL        | NULL      |
+|         21 | Erick       | BA       |      NULL | NULL        | NULL      |
+|         22 | Denise      | DF       |      NULL | NULL        | NULL      |
+|         23 | Diana       | SP       |      NULL | NULL        | NULL      |
+|         24 | Dagmar      | DF       |      NULL | NULL        | NULL      |
+|         25 | Deiverson   | SP       |      NULL | NULL        | NULL      |
+|          1 | 1           | Caneca   |         1 | Douglas     | SP        |
+|          2 | 1           | Garfo    |         1 | Douglas     | SP        |
+|          3 | 2           | Faca     |         2 | Daniela     | SP        |
+|          4 | 5           | Copo     |         5 | Douglas     | PE        |
+|          5 | 19          | Copo     |        19 | Prof Raquel | BA        |
+|          6 | 19          | Colher   |        19 | Prof Raquel | BA        |
+|          7 | 15          | Colher   |        15 | Bianca      | PA        |
+|          8 | 8           | Colher   |         8 | Marlene     | AC        |
+|          9 | 2           | Copo     |         2 | Daniela     | SP        |
+|         10 | 19          | Colher   |        19 | Prof Raquel | BA        |
+|         11 | 6           | Copo     |         6 | Raimundo    | CE        |
+|         12 | 11          | Colher   |        11 | Pedro       | PB        |
+|         13 | 10          | Garfo    |        10 | Daniela     | PI        |
+|         14 | 4           | Garfo    |         4 | Maria       | BA        |
+|         15 | 3           | Colher   |         3 | Ester       | MG        |
+|         16 | 3           | Garfo    |         3 | Ester       | MG        |
+|         17 | 2           | Copo     |         2 | Daniela     | SP        |
+|         18 | 17          | Garfo    |        17 | Celso       | SP        |
+|         19 | 14          | Caneca   |        14 | Carla       | DF        |
+|         20 | 13          | Caneca   |        13 | Julio       | TO        |
++------------+-------------+----------+-----------+-------------+-----------+
+51 rows in set (0.03 sec)
