@@ -1,0 +1,366 @@
+====================================================================
+Resumo - Aulas SQL
+====================================================================
+Acesso ao Banco de Dados MySQL e BigQuery via shell
+Acesso ao LOOKER STUDIO
+
+Bootcamp Martech em Análise de Dados - AD2
+SoulCode Academy
+Professores:
+            Franciane Rodrigues
+            Douglas Ribeiro
+            Jonatas Carneiro
+Acadêmico:
+            José Aurelio Kovalczuk de Oliveira
+
+====================================================================
+VERIFICANDO PROJETOS EXISTENTES
+====================================================================
+	
+	$ gcloud auth list
+	
+	$ gcloud config list project
+	
+====================================================================
+ACESSANDO PROJETO
+====================================================================
+	
+	$ gcloud config set project "id project"
+
+====================================================================
+CRIAÇÃO DE BUCKET
+====================================================================
+[caminho -> gcloud/storage/buckets/[comando -> create/[nome -> gs://"nome"]]]
+
+default
+
+	$ gcloud storage buckets create gs://"nome do bucket"
+
+*OBS: criação por 'default'(multi-region, público, controle detalhado, sem proteção ou regras de ciclo); deve ser reconfigurado para personalização
+
+personalizado
+
+	$ gcloud storage buckets create gs://sample-martech --default-storage-class=nearline --location=US-EAST1 --public-access-prevention --uniform-bucket-level-access --retention-period=60s
+====================================================================
+EXCLUSÃO DO BUCKET
+====================================================================
+
+	gcloud storage buckets delete gs://"nome do bucket"
+
+====================================================================
+LISTAR BUCKETS ATIVOS
+====================================================================
+
+	gcloud storage buckets list
+
+====================================================================
+BANCO DE DADOS GCP
+====================================================================
+Conectando instância GCP
+	$ gcloud sql connect (nome da instância no GCP) --user=root
+	
+	(sem senha:  <enter>)
+	
+Comandos MySQL
+	> exibe os Databases disponíveis:
+		SHOW DATABASES; 
+	> criar Databases:
+		CREATE DATABASE <nome_database>;
+	> acessar Database:
+		USE <nome_database>;
+	> exibe Tabelas:
+		SHOW Tables;
+	> criar Tabelas:
+		CREATE <nome_tabela>;
+	> descrever Schema:
+		DESC <nome_tabela>;
+	> alterando Tabela:
+		ALTER TABLE <tabela> <complemento>
+		> adicionando coluna:
+			ALTER TABLE <nome_tabela> ADD COLUMN <nome_coluna> <tipo_coluna>;
+		> adicionando coluna em determinada posição:
+			ALTER TABLE <nome_tabela> ADD COLUMN <nome_coluna> <tipo_coluna> AFTER <nome_coluna>;
+		> modificar coluna para primeira posição da tabela:
+			ALTER TABLE <nome_tabela> CHANGE <nome_coluna> <nome_coluna> <tipo_coluna> FIRST;
+		> nomear/alterar coluna em PK:
+			ALTER TABLE <nome_tabela> ADD / CHANGE PRIMARY KEY <nome_coluna>;
+	> inserindo dados na tabela, na ordem dos atributos selecionados ou da disposição dos atributos na tabela:
+		INSERT INTO <nome_tabela> <(atributos)> VALUES <valores>;
+		ou 
+		INSERT INTO <nome_tabela> VALUES <valores>;
+	> atualizando dados na tabela:
+		UPDATE <nome_tabela> SET <atributo> = <atualização> WHERE = <condição>;
+	> excluindo dados da tabela:
+		DELETE FROM <tabela ou atributo> WHERE <atributo ou dado>
+	> limitando a consulta:
+		SELECT * FROM <tabela> LIMIT <x>;
+	> excluindo dados da tabela sem apagar Schema:
+		TRUNCATE <tabela>
+	> excluindo tabela:
+		DROP TABLE <tabela>
+	> agrupamento conforme um atributo:
+		SELECT <atributoA>, <atributoB> FROM <tabela> GROUP BY <atributoA>
+	> agrupamento condicional (tem mesma função do WHERE);
+		SELECT <atributoA>, <atributoB> FROM <tabela> GROUP BY <atributoA> HAVING <condição>
+	> união de duas consultas para exibição em uma mesma tabela:
+		SELECT <atributoA>, <atributoB> FROM <tabelaA>
+					WHERE <condição>
+					UNION
+					SELECT <atributoA>, <atributoB> FROM <tabelaA>
+					WHERE <condição>;
+====================================================================
+ATIVIDADE
+====================================================================
+Criar banco de dados com configurações básicas utilizando para nome do banco de dados "livraria" e nome da tabela "leitores"
+
+		mysql> CREATE DATABASE livraria;
+		
+			> SHOW DATABASES; 
+		
+			> USE livraria;
+			
+			> CREATE TABLE leitores (
+				id int not null auto_increment,
+				nome varchar(30) not null,
+				cpf int not null,
+				idade int, 
+				endereco varchar(100),
+				primary key (id)
+			);
+			
+			> SHOW TABLES;
+			
+			> CREATE TABLE livros (
+				isbn int not null,
+				título varchar(30) not null,
+				autor varchar(30) not null,
+				ano int, 
+				edicao int,
+				disponibilidade bool, 
+				primary key (isbn)
+			);
+			
+====================================================================
+ATIVIDADE
+====================================================================
+Criar instância MySQL no CONSOLE
+
+> SQL > CREATE INSTANCE:
+						soulcode-ad2-m
+						<checkbox off> sem senha
+	
+Conectando instância GCP
+	$ gcloud sql connect soulcode-ad2-m --user=
+	
+Trabalhando no MySQL
+	CREATE DATABASE escola;
+	
+	SHOW DATABASES;
+	
+	USE escola;
+	
+	CREATE TABLE alunos (
+				id int not null auto_increment,
+				nome varchar (30) not null,
+				nascimento date,
+				genero varchar (30),
+				peso decimal (5, 2),
+				altura decimal (3, 2),
+				nacionalidade varchar (20) default "Brasil",
+				primary key (id)
+				);
+	
+	DESC alunos;
+	
+	CREATE TABLE cursos ( area varchar(30),
+				curso varchar(30),
+				carga int,
+				abertura date,
+	);
+	
+	DESC cursos;
+	
+	SHOW TABLES;
+	
+	ALTER TABLE cursos ADD COLUMN vagas AFTER carga;
+	
+	DESC cursos;
+	
+	ALTER TABLE cursos ADD COLUMN idcurso INT auto_increment;
+	
+	ALTER TABLE cursos ADD primary key (idcurso);
+	
+	ALTER TABLE cursos CHANGE idcurso idcurso INT FIRST;
+	
+	DESC cursos;
+	
+	INSERT INTO cursos VALUES
+			('1','Humanas','Latras','3000','80','2014-01-01'),
+			('2','Bio','Medicina','5000','40','2014-01-01'),
+			('3','Exatas','Engenharia','4000','50','2014-01-01'),
+			('4','Exatas','ADSS','3500','40','2010-01-01'),
+			('5','Exatas','Mat','3000','40','2000-01-01'),
+			('6','Bio','enfermagem','3000','40','2016-01-01'),
+			('7','Humanas','Filosofia','4000','30','2016-01-01'),
+			('8','Humanas','Geografia','4000','30','2018-01-01'),
+			('9','Exatas','Bancos de Dados','3000','30','2018-01-01'),
+			('10','Bio','Fisioterapis','4000','30','2018-01-01');
+ 
+	INSERT INTO alunos (nome, nascimento, genero, peso, altura, nacionalidade)
+	VALUES
+			('Douglas', '1976-07-04', 'M', '77.5', '1.85', 'Brasil'),
+			('Maria', '1955-08-08', 'F', '69.6', '1.69', 'Brasil'),
+			('Pedro', '1955-12-16', 'M', '96.6', '1.75', 'Brasil'),
+			('Eduardo', '1980-01-30', 'M', '92.6', '1.83', 'Brasil'),
+			('Ester', '1985-01-01', 'F', '65.6', '1.70', 'Brasil'),
+			('Daniela', '2015-03-16', 'F', '29.6', '1.32', 'Brasil'),
+			('Joanna', '1986-06-08', 'F', '72.6', '1.75', 'Inglaterra');
+
+	
+	SELECT * FROM cursos;
+	
+	UPDATE cursos SET curso = 'Fisioterapia' WHERE idcurso = '10';
+	
+	SELECT curso FROM cursos WHERE idcurso = '10';
+	
+	UPDATE cursos SET curso = 'Enfermagem', vagas = '100' WHERE idcurso = '6';
+	
+	SELECT curso, vagas FROM cursos WHERE  idcurso - '6';
+	
+	DELETE FROM alunos WHERE nacionalidade = 'Inglaterra';
+	
+	SELECT * FROM alunos;
+	
+	DELETE FROM cursos WHERE idcurso = '9';
+	
+	DELETE FROM cursos WHERE abertura = '2014-01-01' LIMIT 1;
+	
+	SELECT * FROM cursos;
+	
+	TRUNCATE TABLE alunos;
+	
+	SELECT * FROM alunos;
+	
+	DESC alunos;
+
+====================================================================	
+Conectando banco de dados MySQL e BigQuery
+====================================================================
+(1) criar ou localizar dataset em uma instância MySQL
+	conectando:
+		$ gcloud sql connect "nome da instância" --user=root --quiet
+		
+(2) criar dataset BigQuery
+	* deve ser criado novo dataset para alocar dados do database MySQL
+	* deve ter MESMA region
+		
+(3) usar conector para conexão externa: 
+	> ADD
+		> External data source
+			>> type: Cloud SQL - MySQL
+			>> ID (criar)
+			>> region: mesma para ambos
+			>> IP ou Connection name da instância MySQL
+			>> name database: nome do database MySQL
+			>> username: usuario usado ou padrão 'root'
+		> Create
+		
+(4) criar conta de serviço IAM
+	> copiar service account da conexão criada no BigQuery (Service account id) e autorizar no IAM "grant access"
+	> IAM
+		> GRANT ACCESS
+			> Cloud SQL: Cloud SQL Client
+
+(5) criar tabelas alterando o tipo de dados do MySQL para adequar ao BigQuery
+		INT = INT64
+		VARCHAR = STRING
+		DECIMAL = FLOAT64
+	
+	https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types
+
+(6) no BigQuery replicar cada tabela do database do MySQL
+
+Exemplo:
+#===================================================================
+-- CRIANDO TABELA COM DADOS DO MySQL
+#===================================================================
+------------------------------------------------------------
+-- criando tabela CLIENTE no BigQuery
+------------------------------------------------------------
+DROP TABLE IF EXISTS `poised-standard-389812.mySql_ad2_n.Cliente`;
+CREATE TABLE `poised-standard-389812.mySql_ad2_n.Cliente` (
+  id_cliente INT64,
+  nome STRING,
+  endereco STRING
+);
+------------------------------------------------------------
+-- populando tabela CLIENTE com dados do MySQL
+------------------------------------------------------------
+INSERT INTO `poised-standard-389812.mySql_ad2_n.Cliente`
+SELECT * FROM
+EXTERNAL_QUERY("projects/poised-standard-389812/locations/us-central1/connections/mySql_ad2_n",
+"SELECT * FROM Cliente");
+------------------------------------------------------------
+
+
+====================================================================
+Conexão com LOOKER STUDIO 
+====================================================================
+##GOOGLE DRIVE##
+	> Configurações
+		> Geral
+			[▲] Conectores formato GOOGLE
+##LOOKER STUDIO##
+	> CRIAR
+		> RELATÓRIO EM BRANCO
+		
+	> CONECTOR
+		> PLANILHAS GOOGLE
+		
+		> ESCOLHER PLANILHA
+			> ESCOLHER ATRIBUTO
+				> ADICIONAR AO RELATÓRIO
+					* p/ incluir dados no mesmo relatório
+				> ADICIONAR DADOS
+					* pode ser do mesmo ou outro conjunto de dados
+	
+	> CRIAR KPI
+		> ADICIONAR CAMPO
+			> PREENCHER
+====================================================================
+
+	* mesma conta LOOKER x GCP (CLOUD STORAGE)
+
+## BUCKET / CLOUD STORAGE ##
+
+	> CRIAR BUCKET
+		> SERVICE ACCOUNT
+			> EDIT ACCESS (Bucket)
+			
+	
+##LOOKER STUDIO##
+	* apenas arquivos CSV
+
+	> CRIAR
+		> RELATÓRIO EM BRANCO
+		
+	> CONECTOR
+		> GOOGLE CLOUD STORAGE
+			> CAMINHO STORAGE
+			* não é o gsutil!
+			
+	> RECURSOS
+		> GERENCIAS FONTE DE DADOS ADICIONADOS
+			> EDITAR (nome)
+				> ALIAS
+			> ADICIONAR NOVA FONTE DE DADOS
+			* repetir processo para todas as planilhas transformadas em CSV
+			> REUTILIZÁVEL (outras pessoas podem acessar a base de dados)
+
+====================================================================
+Recomendação de Livros de SQL
+====================================================================
+*SQL para leigos
+*Introdução à Linguagem SQL: Abordagem Prática Para Iniciantes
+*SQL - Guia Prático: um Guia Para o uso de SQL
+*SQL Para Análise de Dados: Técnicas Avançadas Para Transformar Dados em Insights
